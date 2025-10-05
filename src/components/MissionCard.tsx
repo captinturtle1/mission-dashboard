@@ -12,7 +12,7 @@ export default function MissionCard({ name, id, coverImageId }: MissionCardProps
     return (
         <Link
             to={`/mission/${id}`}
-            className='group relative block bg-gray-800 rounded-lg overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-105'
+            className='group relative block bg-zinc-800 rounded-lg overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-105'
         >
             <img
                 src={imageUrl}
@@ -23,7 +23,7 @@ export default function MissionCard({ name, id, coverImageId }: MissionCardProps
 
             <div className='relative p-5 h-48 flex flex-col justify-end'>
                 <h2 className='text-xl font-bold text-white'>{name}</h2>
-                <p className='mt-1 text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+                <p className='mt-1 text-sm text-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
                     View Details &rarr;
                 </p>
             </div>

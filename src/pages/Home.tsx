@@ -20,11 +20,11 @@ function Home() {
     }, []);
 
     return (
-        <div className='bg-zinc-900 min-h-screen w-full p-4 sm:p-8 text-gray-100'>
+        <div className='bg-zinc-900 min-h-screen w-full p-4 sm:p-8 text-zinc-100'>
             <div className='max-w-7xl mx-auto'>
                 <header className='mb-8'>
                     <h1 className='text-3xl font-bold tracking-tight text-white'>Mission Dashboard</h1>
-                    <p className='text-gray-400 mt-1'>Select a mission to view operational details.</p>
+                    <p className='text-zinc-400 mt-1'>Select a mission to view operational details.</p>
                 </header>
 
                 {isLoading ? (
