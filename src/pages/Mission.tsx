@@ -2,6 +2,31 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { Mission as MissionType } from '../types';
 
+const MissionSkeleton = () => (
+    <div className='max-w-7xl mx-auto animate-pulse'>
+        <div className='h-5 w-48 bg-zinc-700 rounded mb-6'></div>
+
+        <div className='flex items-center gap-4 mb-6'>
+            <div className='h-10 w-1/2 bg-zinc-700 rounded'></div>
+            <div className='h-7 w-24 bg-zinc-700 rounded-full'></div>
+        </div>
+
+        <div className='bg-zinc-800 p-6 rounded-lg shadow-md mb-8'>
+            <div className='h-8 w-1/3 bg-zinc-700 rounded mb-4'></div>
+            <div className='h-5 w-1/2 bg-zinc-700 rounded'></div>
+        </div>
+
+        <div>
+            <div className='h-8 w-1/4 bg-zinc-700 rounded mb-4'></div>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+                <div className='h-48 bg-zinc-700 rounded-lg'></div>
+                <div className='h-48 bg-zinc-700 rounded-lg'></div>
+                <div className='h-48 bg-zinc-700 rounded-lg'></div>
+            </div>
+        </div>
+    </div>
+);
+
 function Mission() {
     const { id } = useParams<{ id: string }>();
     const [mission, setMission] = useState<MissionType | null>(null);
@@ -47,7 +72,11 @@ function Mission() {
     };
 
     if (isLoading) {
-        return <div className='bg--900 min-h-screen p-8 text-white'>Loading mission data...</div>;
+        return (
+            <div className='bg-zinc-900 min-h-screen w-full p-4 sm:p-8'>
+                <MissionSkeleton />
+            </div>
+        );
     }
 
     if (!mission) {
