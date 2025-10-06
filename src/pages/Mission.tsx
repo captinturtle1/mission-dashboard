@@ -211,7 +211,7 @@ function Mission() {
                                             setContrast(0);
                                         }}
                                     >
-                                        <img src={`http://localhost:8080/image/${imageId}?width=400&height=250`} alt={`Imagery for ${mission.name}`} className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110' />
+                                        <img src={`https://api.mission.austinlopez.work/image/${imageId}?width=400&height=250`} alt={`Imagery for ${mission.name}`} className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110' />
                                     </div>
                                 );
                             } else {
@@ -224,7 +224,7 @@ function Mission() {
                                             setContrast(0);
                                         }}
                                     >
-                                        <img src={`http://localhost:8080/image/${imageId}?width=400&height=250`} alt={`Imagery for ${mission.name}`} className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110' />
+                                        <img src={`https://api.mission.austinlopez.work/image/${imageId}?width=400&height=250`} alt={`Imagery for ${mission.name}`} className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110' />
                                     </div>
                                 );
                             }
