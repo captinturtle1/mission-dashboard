@@ -1,16 +1,30 @@
 # Mission Dashboard
 
-A simple dashboard for working with [sat-image-server](https://github.com/captinturtle1/sat-image-server)
+A lightweight dashboard built with **Vite + React** for visualizing and interacting with satellite mission data.  
+Designed to work alongside the [sat-image-server](https://github.com/captinturtle1/sat-image-server).
 
-## Running locally
-1. Install packages
-    ```
-    npm install
-    ```
+## Getting Started
 
-2. Run local dev server
-    ```
-    npm run dev
-    ```
+### 1. Install dependencies
+```bash
+npm install
+```
 
-3. Navigate to `http://localhost:5173` to view
+### 2. Start the development server
+```bash
+npm run dev
+```
+
+### 3. Open in browser
+Navigate to http://localhost:5173
+
+## Architecture
+The dashboard connects to the sat-image-server API and displays mission data in an interactive UI.
+
+![System Architecture Diagram](https://raw.githubusercontent.com/captinturtle1/mission-dashboard/refs/heads/main/documentation/architecture.png)
+
+## Tech Stack
+
+- [Vite](https://vite.dev/)
+- [React](https://react.dev/)
+- [Go API](https://github.com/captinturtle1/sat-image-server)
