@@ -24,7 +24,7 @@ const statusStyles: { [key: string]: string } = {
 
 
 export default function MissionCard({ name, id, status, priority, tca, coverImageId }: MissionCardProps) {
-    const imageUrl = `https://api.mission.austinlopez.work/image/${coverImageId}?width=400&height=250`;
+    const imageUrl = `https://api.mission.austinlopez.work/image/${coverImageId}?width=200`;
 
     return (
         <Link
