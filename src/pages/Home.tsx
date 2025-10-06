@@ -33,9 +33,9 @@ function Home() {
     const [hasMore, setHasMore] = useState(true);
     const COUNT_PER_PAGE = 16;
 
-    const observer = useRef<IntersectionObserver>();
+    const observer = useRef<IntersectionObserver | null>(null);
 
-    const lastMissionCardRef = useCallback(node => {
+    const lastMissionCardRef = useCallback((node: HTMLDivElement) => {
         if (isLoading) return;
 
         if (observer.current) observer.current.disconnect();

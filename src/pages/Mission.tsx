@@ -58,8 +58,8 @@ function Mission() {
 
     const [contrast, setContrast] = useState(0);
 
-    const observer = useRef<IntersectionObserver>();
-    const lastImageRef = useCallback(node => {
+    const observer = useRef<IntersectionObserver | null>(null);
+    const lastImageRef = useCallback((node: HTMLDivElement) => {
         if (isLoading) return;
         if (observer.current) observer.current.disconnect();
 
