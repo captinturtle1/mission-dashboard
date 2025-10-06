@@ -33,7 +33,6 @@ export default function MissionCard({ name, id, status, priority, tca, coverImag
         >
             <img
                 src={imageUrl}
-                alt={`Cover for ${name}`}
                 className='absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-50'
             />
             <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent'></div>
