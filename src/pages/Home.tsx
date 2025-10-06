@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import MissionCard from '../components/MissionCard';
 import type { Mission } from '../types';
 
@@ -33,6 +33,23 @@ function Home() {
     const [hasMore, setHasMore] = useState(true);
     const COUNT_PER_PAGE = 16;
 
+    const observer = useRef<IntersectionObserver>();
+
+    const lastMissionCardRef = useCallback(node => {
+        if (isLoading) return;
+
+        if (observer.current) observer.current.disconnect();
+
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                setIsFetchingMore(true);
+            }
+        });
+
+        // If the node exists, start observing it
+        if (node) observer.current.observe(node);
+    }, [isLoading, hasMore]);
+
     const fetchMissions = useCallback(async (token: string | null) => {
         let url = `https://api.mission.austinlopez.work/missions?count=${COUNT_PER_PAGE}`;
         if (token) {
@@ -61,31 +78,12 @@ function Home() {
     }, [fetchMissions]);
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight - 100 || isFetchingMore || !hasMore) {
-                return;
-            }
-            setIsFetchingMore(true);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [isFetchingMore, hasMore]);
-
-    useEffect(() => {
         if (isFetchingMore && hasMore) {
             fetchMissions(nextToken);
+        } else if (!hasMore) {
+            setIsFetchingMore(false);
         }
     }, [isFetchingMore, hasMore, nextToken, fetchMissions]);
-
-    useEffect(() => {
-        if (isLoading || isFetchingMore || !hasMore) return;
-
-        if (document.documentElement.scrollHeight <= window.innerHeight) {
-            setIsFetchingMore(true);
-        }
-    }, [missions, isLoading, isFetchingMore, hasMore]);
-
 
     return (
         <div className='min-h-screen w-full p-4 sm:p-8 text-zinc-100'>
@@ -100,17 +98,17 @@ function Home() {
                 ) : (
                     <>
                         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-                            {missions.map((mission) => (
-                                <MissionCard
-                                    key={mission.id}
-                                    id={mission.id}
-                                    name={mission.name}
-                                    status={mission.status}
-                                    priority={mission.priority}
-                                    tca={mission.tca}
-                                    coverImageId={mission.image_ids[0]}
-                                />
-                            ))}
+                            {missions.map((mission, index) => {
+                                if (missions.length === index + 1) {
+                                    return (
+                                        <div ref={lastMissionCardRef} key={mission.id}>
+                                            <MissionCard {...mission} coverImageId={mission.image_ids[0]} />
+                                        </div>
+                                    );
+                                } else {
+                                    return <MissionCard key={mission.id} {...mission} coverImageId={mission.image_ids[0]} />;
+                                }
+                            })}
                         </div>
 
                         {isFetchingMore && (

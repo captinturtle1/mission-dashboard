@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { Mission as MissionType } from '../types';
 
@@ -58,6 +58,21 @@ function Mission() {
 
     const [contrast, setContrast] = useState(0);
 
+    const observer = useRef<IntersectionObserver>();
+    const lastImageRef = useCallback(node => {
+        if (isLoading) return;
+        if (observer.current) observer.current.disconnect();
+
+        observer.current = new IntersectionObserver(entries => {
+            const hasMoreImages = node?.parentElement ? (node.parentElement.children.length < (mission?.image_ids.length || 0)) : false;
+            if (entries[0].isIntersecting && hasMoreImages) {
+                setIsFetchingMoreImages(true);
+            }
+        });
+
+        if (node) observer.current.observe(node);
+    }, [isLoading, mission]);
+
     useEffect(() => {
         if (!id) return;
         fetch(`https://api.mission.austinlopez.work/mission/${id}`)
@@ -86,21 +101,6 @@ function Mission() {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!mission) return;
-            const hasMoreImages = visibleImages.length < mission.image_ids.length;
-
-            if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight - 100 || isFetchingMoreImages || !hasMoreImages) {
-                return;
-            }
-            setIsFetchingMoreImages(true);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [isFetchingMoreImages, mission, visibleImages]);
 
     useEffect(() => {
         if (isFetchingMoreImages && mission) {
@@ -199,18 +199,36 @@ function Mission() {
                 <div>
                     <h2 className='sticky top-0 z-10 bg-zinc-900 py-4 text-2xl font-semibold text-white mb-4'>Imagery ({visibleImages.length} / {mission.image_ids.length})</h2>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                        {visibleImages.map((imageId: string) => (
-                            <div
-                                key={imageId}
-                                className='rounded-lg overflow-hidden cursor-pointer group'
-                                onClick={() => setSelectedImageId(imageId)}
-                            >
-                                <img
-                                    src={`https://api.mission.austinlopez.work/image/${imageId}?width=200`}
-                                    className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110'
-                                />
-                            </div>
-                        ))}
+                        {visibleImages.map((imageId, index) => {
+                            if (visibleImages.length === index + 1) {
+                                return (
+                                    <div
+                                        ref={lastImageRef}
+                                        key={imageId}
+                                        className='rounded-lg overflow-hidden cursor-pointer group'
+                                        onClick={() => {
+                                            setSelectedImageId(imageId);
+                                            setContrast(0);
+                                        }}
+                                    >
+                                        <img src={`http://localhost:8080/image/${imageId}?width=400&height=250`} alt={`Imagery for ${mission.name}`} className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110' />
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <div
+                                        key={imageId}
+                                        className='rounded-lg overflow-hidden cursor-pointer group'
+                                        onClick={() => {
+                                            setSelectedImageId(imageId);
+                                            setContrast(0);
+                                        }}
+                                    >
+                                        <img src={`http://localhost:8080/image/${imageId}?width=400&height=250`} alt={`Imagery for ${mission.name}`} className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110' />
+                                    </div>
+                                );
+                            }
+                        })}
                         {isFetchingMoreImages && (
                             <>
                                 <ImageSkeleton />
