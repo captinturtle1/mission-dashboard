@@ -115,6 +115,17 @@ function Mission() {
         }
     }, [isFetchingMoreImages, mission, page]);
 
+    useEffect(() => {
+        if (!mission) return;
+        const hasMoreImages = visibleImages.length < mission.image_ids.length;
+
+        if (isLoading || isFetchingMoreImages || !hasMoreImages) return;
+
+        if (document.documentElement.scrollHeight <= window.innerHeight) {
+            setIsFetchingMoreImages(true);
+        }
+    }, [mission, visibleImages, isLoading, isFetchingMoreImages]);
+
     if (isLoading) {
         return (
             <div className='bg-zinc-900 min-h-screen w-full p-4 sm:p-8'>
@@ -196,7 +207,6 @@ function Mission() {
                             >
                                 <img
                                     src={`https://api.mission.austinlopez.work/image/${imageId}?width=200`}
-                                    alt={`Imagery for ${mission.name}`}
                                     className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110'
                                 />
                             </div>
@@ -223,7 +233,6 @@ function Mission() {
 
                     <img
                         src={`https://api.mission.austinlopez.work/image/${selectedImageId}?contrast=${contrast}`}
-                        alt="Full resolution view"
                         className='max-w-[90vw] max-h-[80vh] rounded-lg shadow-2xl'
                         onClick={(e) => e.stopPropagation()}
                     />

@@ -78,6 +78,14 @@ function Home() {
         }
     }, [isFetchingMore, hasMore, nextToken, fetchMissions]);
 
+    useEffect(() => {
+        if (isLoading || isFetchingMore || !hasMore) return;
+
+        if (document.documentElement.scrollHeight <= window.innerHeight) {
+            setIsFetchingMore(true);
+        }
+    }, [missions, isLoading, isFetchingMore, hasMore]);
+
 
     return (
         <div className='min-h-screen w-full p-4 sm:p-8 text-zinc-100'>
