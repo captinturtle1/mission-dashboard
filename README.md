@@ -2,13 +2,15 @@
 
 A simple dashboard for working with [sat-image-server](https://github.com/captinturtle1/sat-image-server)
 
-### Running locally
-Install packages
-```
-npm install
-```
+## Running locally
+1. Install packages
+    ```
+    npm install
+    ```
 
-Run local dev server
-```
-npm run dev
-```
+2. Run local dev server
+    ```
+    npm run dev
+    ```
+
+3. Navigate to `http://localhost:5173` to view
