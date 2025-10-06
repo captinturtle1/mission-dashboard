@@ -41,12 +41,22 @@ const MissionSkeleton = () => (
     </div>
 );
 
+const ImageSkeleton = () => (
+    <div className='aspect-video bg-zinc-700 rounded-lg'></div>
+);
+
 function Mission() {
     const { id } = useParams<{ id: string }>();
     const [mission, setMission] = useState<MissionType | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-
     const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
+
+    const IMAGES_PER_PAGE = 9;
+    const [visibleImages, setVisibleImages] = useState<string[]>([]);
+    const [page, setPage] = useState(1);
+    const [isFetchingMoreImages, setIsFetchingMoreImages] = useState(false);
+
+    const [contrast, setContrast] = useState(0);
 
     useEffect(() => {
         if (!id) return;
@@ -54,6 +64,7 @@ function Mission() {
             .then((res) => res.json())
             .then((data) => {
                 setMission(data);
+                setVisibleImages(data.image_ids.slice(0, IMAGES_PER_PAGE));
                 setIsLoading(false);
             })
             .catch(error => {
@@ -75,6 +86,34 @@ function Mission() {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!mission) return;
+            const hasMoreImages = visibleImages.length < mission.image_ids.length;
+
+            if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight - 100 || isFetchingMoreImages || !hasMoreImages) {
+                return;
+            }
+            setIsFetchingMoreImages(true);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isFetchingMoreImages, mission, visibleImages]);
+
+    useEffect(() => {
+        if (isFetchingMoreImages && mission) {
+            setTimeout(() => {
+                const nextPage = page + 1;
+                const newVisibleImages = mission.image_ids.slice(0, nextPage * IMAGES_PER_PAGE);
+
+                setVisibleImages(newVisibleImages);
+                setPage(nextPage);
+                setIsFetchingMoreImages(false);
+            }, 500);
+        }
+    }, [isFetchingMoreImages, mission, page]);
 
     if (isLoading) {
         return (
@@ -147,21 +186,28 @@ function Mission() {
                 </div>
 
                 <div>
-                    <h2 className='text-2xl font-semibold text-white mb-4'>Imagery</h2>
+                    <h2 className='sticky top-0 z-10 bg-zinc-900 py-4 text-2xl font-semibold text-white mb-4'>Imagery ({visibleImages.length} / {mission.image_ids.length})</h2>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                        {mission.image_ids?.map((imageId: string) => (
+                        {visibleImages.map((imageId: string) => (
                             <div
                                 key={imageId}
                                 className='rounded-lg overflow-hidden cursor-pointer group'
                                 onClick={() => setSelectedImageId(imageId)}
                             >
                                 <img
-                                    src={`https://api.mission.austinlopez.work/image/${imageId}?width=400&height=250`}
+                                    src={`https://api.mission.austinlopez.work/image/${imageId}?width=200`}
                                     alt={`Imagery for ${mission.name}`}
                                     className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-110'
                                 />
                             </div>
                         ))}
+                        {isFetchingMoreImages && (
+                            <>
+                                <ImageSkeleton />
+                                <ImageSkeleton />
+                                <ImageSkeleton />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -176,11 +222,30 @@ function Mission() {
                     </button>
 
                     <img
-                        src={`https://api.mission.austinlopez.work/image/${selectedImageId}`}
+                        src={`https://api.mission.austinlopez.work/image/${selectedImageId}?contrast=${contrast}`}
                         alt="Full resolution view"
-                        className='max-w-full max-h-full rounded-lg shadow-2xl'
+                        className='max-w-[90vw] max-h-[80vh] rounded-lg shadow-2xl'
                         onClick={(e) => e.stopPropagation()}
                     />
+
+                    <div
+                        className='absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm p-4 rounded-lg w-full max-w-md'
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <label htmlFor="contrast" className="block text-sm font-medium text-white mb-2 text-center">
+                            Contrast: {contrast}
+                        </label>
+                        <input
+                            id="contrast"
+                            type="range"
+                            min="-100"
+                            max="100"
+                            step="1"
+                            value={contrast}
+                            onChange={(e) => setContrast(Number(e.target.value))}
+                            className="w-full h-2 bg-zinc-700 rounded-lg appearance-none cursor-pointer"
+                        />
+                    </div>
                 </div>
             )}
         </div>
