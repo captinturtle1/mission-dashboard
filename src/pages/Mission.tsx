@@ -5,7 +5,7 @@ import type { Mission as MissionType } from '../types';
 const statusStyles: { [key: string]: string } = {
     active: 'bg-green-500/20 text-green-400',
     upcoming: 'bg-blue-500/20 text-blue-400',
-    completed: 'bg-gray-500/20 text-gray-400',
+    completed: 'bg-zinc-500/20 text-zinc-400',
     failed: 'bg-red-500/20 text-red-400',
 };
 
@@ -89,7 +89,7 @@ function Mission() {
     }
 
     return (
-        <div className='min-h-screen w-full p-4 sm:p-8 text-gray-200'>
+        <div className='min-h-screen w-full p-4 sm:p-8 text-zinc-200'>
             <div className='max-w-7xl mx-auto'>
                 <Link to="/" className='text-blue-400 hover:underline mb-6 inline-block'>
                     &larr; Back to Dashboard
@@ -103,44 +103,44 @@ function Mission() {
                 </div>
 
 
-                <div className='bg-gray-800 p-6 rounded-lg shadow-md mb-8'>
+                <div className='bg-zinc-800 p-6 rounded-lg shadow-md mb-8'>
                     <h2 className='text-2xl font-semibold text-white mb-4 border-b border-white/10 pb-2'>Operational Details</h2>
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
 
                         <div>
-                            <p className='text-sm text-gray-400'>Priority</p>
+                            <p className='text-sm text-zinc-400'>Priority</p>
                             <p className='text-lg font-medium text-white'>{mission.priority}</p>
                         </div>
                         <div>
-                            <p className='text-sm text-gray-400'>Collection Type</p>
+                            <p className='text-sm text-zinc-400'>Collection Type</p>
                             <p className='text-lg font-medium text-white'>{mission.collection_type}</p>
                         </div>
                         <div>
-                            <p className='text-sm text-gray-400'>Minimum Range</p>
+                            <p className='text-sm text-zinc-400'>Minimum Range</p>
                             <p className='text-lg font-medium text-white'>{mission.min_range_km.toLocaleString()} km</p>
                         </div>
 
                         <div>
-                            <p className='text-sm text-gray-400'>Observer Satellite</p>
+                            <p className='text-sm text-zinc-400'>Observer Satellite</p>
                             <p className='text-lg font-mono text-white'>{mission.observer_satellite_id}</p>
                         </div>
                         <div>
-                            <p className='text-sm text-gray-400'>Target Satellite</p>
+                            <p className='text-sm text-zinc-400'>Target Satellite</p>
                             <p className='text-lg font-mono text-white'>{mission.target_satellite_id}</p>
                         </div>
                         <div>
-                            <p className='text-sm text-gray-400'>Pointing Target</p>
+                            <p className='text-sm text-zinc-400'>Pointing Target</p>
                             <p className='text-lg font-mono text-white'>{mission.pointing_target}</p>
                         </div>
 
                         <div className='md:col-span-2 lg:col-span-3'>
-                            <p className='text-sm text-gray-400'>Collection Window</p>
+                            <p className='text-sm text-zinc-400'>Collection Window</p>
                             <p className='text-lg font-medium text-white'>
                                 {formatTimestamp(mission.collection_window_start)} to {formatTimestamp(mission.collection_window_end)}
                             </p>
                         </div>
                         <div className='md:col-span-2 lg:col-span-3'>
-                            <p className='text-sm text-gray-400'>Time of Closest Approach (TCA)</p>
+                            <p className='text-sm text-zinc-400'>Time of Closest Approach (TCA)</p>
                             <p className='text-lg font-medium text-white'>{formatTimestamp(mission.tca)}</p>
                         </div>
                     </div>

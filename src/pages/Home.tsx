@@ -3,14 +3,14 @@ import MissionCard from '../components/MissionCard';
 import type { Mission } from '../types';
 
 const MissionCardSkeleton = () => (
-    <div className='h-56 bg-gray-800 rounded-lg p-4 flex flex-col justify-end'>
-        <div className='h-6 w-3/4 bg-gray-700 rounded mb-2'></div>
+    <div className='h-56 bg-zinc-800 rounded-lg p-4 flex flex-col justify-end'>
+        <div className='h-6 w-3/4 bg-zinc-700 rounded mb-2'></div>
         <div className='flex items-center justify-between'>
-            <div className='h-5 w-1/4 bg-gray-700 rounded-full'></div>
-            <div className='h-4 w-1/3 bg-gray-700 rounded'></div>
+            <div className='h-5 w-1/4 bg-zinc-700 rounded-full'></div>
+            <div className='h-4 w-1/3 bg-zinc-700 rounded'></div>
         </div>
         <div className='mt-3 pt-3 border-t border-white/10'>
-            <div className='h-3 w-1/2 bg-gray-700 rounded'></div>
+            <div className='h-3 w-1/2 bg-zinc-700 rounded'></div>
         </div>
     </div>
 );
@@ -44,11 +44,11 @@ function Home() {
     }, []);
 
     return (
-        <div className='min-h-screen w-full p-4 sm:p-8 text-gray-100'>
+        <div className='min-h-screen w-full p-4 sm:p-8 text-zinc-100'>
             <div className='max-w-7xl mx-auto'>
                 <header className='mb-8'>
                     <h1 className='text-3xl font-bold tracking-tight text-white'>Mission Dashboard</h1>
-                    <p className='text-gray-400 mt-1'>Select a mission to view operational details.</p>
+                    <p className='text-zinc-400 mt-1'>Select a mission to view operational details.</p>
                 </header>
 
                 {isLoading ? (
